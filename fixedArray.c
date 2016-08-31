@@ -121,6 +121,10 @@ void ST7735_uBinOut8(uint32_t n) {
   fixedPt[3] = 46;
   fixedPt[4] = (((n%256)*10)/256) + 48;
   fixedPt[5] = (((((n%256)*10)%256)*10)/256) + 48;
+  // if the last spot was a 0, this checks the digit after that to see if it needs to round up!
+  if (((((((n%256)*10)%256)*10)/256) == 0) && ((((((((n%256)*10)%256)*10)%256)*10)/256) >= 5)) {
+    fixedPt[5] = (((((n%256)*10)%256)*10)/256) + 49; // plus 49 is an extra 1 to round up!
+  }
 	
   for (int i = 0; i < 6; i++) {
     ST7735_OutChar(fixedPt[i]);
